@@ -32,10 +32,17 @@ g++ Mshikaki.cpp -o Mshikaki
 
 - Execute the Mshikaki tool with the necessary arguments:
 
+
 ```bash
-./Mshikaki -s <path_to_shellcode> -p <target_process_id>
+./Mshikaki -i <path_to_shellcode> 
 
 ```
+
+```bash
+./Mshikaki -i <path_to_shellcode> -p <target_process_id>
+
+```
+
 
 ## Technical Details
 
