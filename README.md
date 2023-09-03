@@ -46,6 +46,9 @@ Mshikaki.exe -i <path_to_shellcode> -p <target_process_id>
 
 ![demo](demo.gif)
 
+- Example with encrypted shellcode
+
+![encrypted](demo1.gif)
 ## Technical Details
 
 - **Language:** The tool is written in C++.
