@@ -30,19 +30,21 @@ g++ Mshikaki.cpp -o Mshikaki
 
 - Prepare your shellcode and, if desired, encrypt it using XOR.
 
-- Execute the Mshikaki tool with the necessary arguments:
+![msfvenom](hex.png)
+
+- Execute the tool with the necessary arguments:
 
 
 ```bash
-./Mshikaki -i <path_to_shellcode> 
-
+Mshikaki.exe -i <path_to_shellcode> 
 ```
 
 ```bash
-./Mshikaki -i <path_to_shellcode> -p <target_process_id>
+Mshikaki.exe -i <path_to_shellcode> -p <target_process_id>
 
 ```
 
+![demo](demo.gif)
 
 ## Technical Details
 
