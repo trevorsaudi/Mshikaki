@@ -29,6 +29,7 @@ g++ Mshikaki.cpp -o Mshikaki
 ## Usage
 
 - Prepare your shellcode and, if desired, encrypt it using XOR.
+- The shellcode file should contain hex formatted shellcode as shown below.
 
 ![msfvenom](hex.png)
 
@@ -40,7 +41,7 @@ Mshikaki.exe -i <path_to_shellcode>
 ```
 
 ```bash
-Mshikaki.exe -i <path_to_shellcode> -p <target_process_id>
+Mshikaki.exe -i <path_to_shellcode> -p <process_name>
 
 ```
 
