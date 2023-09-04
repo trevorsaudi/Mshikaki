@@ -26,7 +26,11 @@ git clone https://github.com/trevorsaudi/Mshikaki.git
 ```
 2. Compile the cpp source code:
 
-- compile on windows using cl.exe 
+- compile on windows using cl.exe
+
+```bash
+cl /EHsc Mshikaki.cpp /link /SUBSYSTEM:CONSOLE     
+```
 
 ## Usage
 
