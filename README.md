@@ -2,7 +2,6 @@
 
 "Mshikaki - kebab (skewered meat, especially beef)" yum yum 😋
 
-mshikaki - Wiktionary, the free dictionary
 
 ## Overview
 **Mshikaki** is a shellcode injection tool designed to bypass AMSI (Antimalware Scan Interface). It leverages the `QueueUserAPC()` injection technique and offers support for XOR encryption, making it a powerful tool for security researchers and penetration testers.
