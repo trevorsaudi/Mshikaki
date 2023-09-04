@@ -25,9 +25,8 @@
 git clone https://github.com/trevorsaudi/Mshikaki.git
 ```
 2. Compile the cpp source code:
-```bash
-g++ Mshikaki.cpp -o Mshikaki
-```
+
+- compile on windows using cl.exe 
 
 ## Usage
 
