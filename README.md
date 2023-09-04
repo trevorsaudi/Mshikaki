@@ -31,7 +31,7 @@ git clone https://github.com/trevorsaudi/Mshikaki.git
 ```bash
 cl /EHsc Mshikaki.cpp /link /SUBSYSTEM:CONSOLE     
 ```
-
+![Installation](Installation.PNG)
 ## Usage
 
 - Prepare your shellcode and, if desired, encrypt it using XOR.
