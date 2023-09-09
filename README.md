@@ -31,13 +31,13 @@ git clone https://github.com/trevorsaudi/Mshikaki.git
 ```bash
 cl /EHsc Mshikaki.cpp /link /SUBSYSTEM:CONSOLE     
 ```
-![Installation](Installation.PNG)
+![Installation](images/Installation.PNG)
 ## Usage
 
 - Prepare your shellcode and, if desired, encrypt it using XOR.
 - The shellcode file should contain hex formatted shellcode as shown below.
 
-![msfvenom](hex.png)
+![msfvenom](images/hex.png)
 
 - Execute the tool with the necessary arguments:
 
@@ -51,11 +51,11 @@ Mshikaki.exe -i <path_to_shellcode> -p <process_name>
 
 ```
 
-![demo](demo.gif)
+![demo](images/demo.gif)
 
 - Example with encrypted shellcode
 
-![encrypted](demo1.gif)
+![encrypted](images/demo1.gif)
 ## Technical Details
 
 - **Language:** The tool is written in C++.

