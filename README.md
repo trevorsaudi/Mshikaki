@@ -26,8 +26,7 @@ git clone https://github.com/trevorsaudi/Mshikaki.git
 ```
 2. Compile the cpp source code:
 
-- compile on windows using cl.exe
-
+- compile on windows using [cl.exe](https://learn.microsoft.com/en-us/cpp/build/walkthrough-compiling-a-native-cpp-program-on-the-command-line?view=msvc-170#open-a-developer-command-prompt) or your preffered compiler. Note that cl.exe is only available if you have installed the Developer Command Prompt for VS or the Microsoft Visual C++ Build Tools
 ```bash
 cl /EHsc Mshikaki.cpp /link /SUBSYSTEM:CONSOLE     
 ```
