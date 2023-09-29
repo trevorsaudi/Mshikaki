@@ -4,7 +4,8 @@
 
 
 ## Overview
-**Mshikaki** is a shellcode injection tool designed to showcase a stealthy process injection technique. It leverages the `QueueUserAPC()` injection technique and offers support for XOR encryption
+
+**Mshikaki** is a shellcode injection tool designed to showcase various process injection techniques. It currently supports the `QueueUserAPC()` injection technique.
 
 ## Table of Contents
 - [Features](#features)
