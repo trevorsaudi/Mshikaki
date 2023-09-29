@@ -4,7 +4,7 @@
 
 
 ## Overview
-**Mshikaki** is a shellcode injection tool designed to bypass AMSI (Antimalware Scan Interface). It leverages the `QueueUserAPC()` injection technique and offers support for XOR encryption, making it a powerful tool for security researchers and penetration testers.
+**Mshikaki** is a shellcode injection tool designed to showcase a stealthy process injection technique. It leverages the `QueueUserAPC()` injection technique and offers support for XOR encryption
 
 ## Table of Contents
 - [Features](#features)
@@ -15,7 +15,6 @@
 - [License](#license)
 
 ## Features
-- **Bypass AMSI**: Mshikaki is capable of bypassing the Antimalware Scan Interface, allowing for stealthy shellcode execution.
 - **QueueUserAPC() Injection**: This technique is used to inject shellcode into a running process, providing a method to execute arbitrary code.
 - **XOR Encryption Support**: Enhance the stealthiness of your shellcode by encrypting it with XOR, making detection even more challenging.
 
