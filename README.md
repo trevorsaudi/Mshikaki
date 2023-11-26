@@ -1,8 +1,5 @@
 # Mshikaki
 
-"Mshikaki - kebab (skewered meat, especially beef)" yum yum 😋
-
-
 ## Overview
 
 **Mshikaki** is a shellcode injection tool designed to showcase various process injection techniques. It currently supports the `QueueUserAPC()` injection technique.
